@@ -52,7 +52,9 @@ require_once "bigbang.php";
 
 $s = <<<EEE
 - hi
-- hay
+- hay:no
+- hay2: no
+- "my:key": The value is raw: it can contain colon too
 - ho:
 ----- bloom
 ----- doom:
@@ -61,12 +63,15 @@ $s = <<<EEE
 --------- 78
 --------- 78.4
 --------- true
---------- false
+--------- 10: false
 --------- 
 --------- # this is also empty string
 --------- null
 ----- zoom
 - hue
+- snif: # this is a comment
+- snaf: This # is not a comment
+
 EEE;
 
 a(BabyDashTool::parse($s));
@@ -75,14 +80,11 @@ a(BabyDashTool::parse($s));
 The result of the above code is the following array:
 
 ```php
-array (size=3)
-  0 => string 'apple' (length=5)
-  1 => string 'banana' (length=6)
-  2 => string 'cherry' (length=6)
-
-array (size=4)
+array (size=8)
   0 => string 'hi' (length=2)
-  1 => string 'hay' (length=3)
+  'hay' => string 'no' (length=2)
+  'hay2' => string 'no' (length=2)
+  'my:key' => string 'The value is raw: it can contain colon too' (length=42)
   'ho' => 
     array (size=3)
       0 => string 'bloom' (length=5)
@@ -93,14 +95,62 @@ array (size=4)
           2 => int 78
           3 => float 78.4
           4 => boolean true
-          5 => boolean false
-          6 => string '' (length=0)
-          7 => string '' (length=0)
-          8 => null
+          10 => boolean false
+          11 => string '' (length=0)
+          12 => string '' (length=0)
+          13 => null
       1 => string 'zoom' (length=4)
-  2 => string 'hue' (length=3)
+  1 => string 'hue' (length=3)
+  'snif' => string '' (length=0)
+  'snaf' => string 'This # is not a comment' (length=23)
 
 ```
+
+
+
+
+More about the baby dash notation
+--------------------------------------
+
+You always start with a leading dash.
+To create a new array level, you must first write a key, then write the other lines below it.
+The number of leading dashes is given with the formulae:
+ 
+```
+numberOfDashes = 1 + level * 4
+```
+
+With 0 being the root level.
+
+A key is recognized as such only if it ends with a colon char (:).
+
+You can also write the key and the value on the same line, like this:
+
+```
+- key: value
+```
+
+The value is casted by default to the following types: int, float, true, false, null.
+
+
+
+If you need to write a literal colon in the key, you need to protect it using quotes (you can use either single quotes or double quotes).
+
+For instance:
+
+```
+- "my:key": The value can contain the colon char (:), it doesn't matter
+```
+
+
+By default, baby dash notation use quoting for the key, but not the value: the value is raw, which is the desired behaviour
+for some other tools.
+
+
+The BabyDashTool tool let you use quotable values by turning on the acceptQuotableValue flag (since 1.1.0) though.
+If you use this option, then the resulting value is always a string (it is not casted).
+In other words, it is either casted, or quoted.
+
 
 
 
@@ -108,13 +158,17 @@ array (size=4)
 Dependencies
 ------------------
 
-- [lingtalfi/IndentedLines 1.0.2](https://github.com/lingtalfi/IndentedLines)
+- [lingtalfi/IndentedLines 1.1.0](https://github.com/lingtalfi/IndentedLines)
 
 
 
 
 History Log
 ------------------
+    
+- 1.1.0 -- 2015-12-19
+
+    - add acceptedQuotableValue parameter to BabyDashTool::parse method
     
 - 1.0.0 -- 2015-12-19
 

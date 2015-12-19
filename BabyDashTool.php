@@ -8,11 +8,13 @@ namespace BabyDash;
 use IndentedLines\KeyFinder\KeyFinder;
 use IndentedLines\NodeToArrayConvertor\NodeToArrayConvertor;
 use IndentedLines\NodeTreeBuilder\NodeTreeBuilder;
+use IndentedLines\ValueInterpreter\QuotableValueInterpreter;
 
-class BabyDashTool {
+class BabyDashTool
+{
 
 
-    public static function parse($s)
+    public static function parse($s, $acceptQuotableValue = false)
     {
         $node = NodeTreeBuilder::create()
             ->setKeyFinder(KeyFinder::create()->setKvSep(':'))
@@ -24,7 +26,10 @@ class BabyDashTool {
             ->setHasLeadingIndentChar(true)
             ->setIndentChar('-')
             ->buildNode($s);
+        if (true === $acceptQuotableValue) {
+            return NodeToArrayConvertor::create()->setInterpreter(QuotableValueInterpreter::create())->convert($node);
+        }
         return NodeToArrayConvertor::create()->convert($node);
     }
-    
+
 }
