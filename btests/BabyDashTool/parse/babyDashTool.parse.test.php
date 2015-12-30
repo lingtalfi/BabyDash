@@ -35,5 +35,31 @@ $agg->addTest(function (&$msg, $testNumber) use ($s) {
 });
 
 
+$s = <<<EEE
+- fruits:
+----- apple
+----- banana
+- cherry
+EEE;
+
+
+$agg->addTest(function (&$msg, $testNumber) use ($s) {
+    $res = BabyDashTool::parse($s);
+    $expected = [
+        'fruits' => [
+            'apple',
+            'banana',
+        ],
+        'cherry',
+    ];
+
+    $ret = ($res === $expected);
+    if (false === $ret) {
+        ComparisonErrorTableTool::collect($testNumber, $expected, $res);
+    }
+    return $ret;
+});
+
+
 PrettyTestInterpreter::create()->execute($agg);
 ComparisonErrorTableTool::display();
