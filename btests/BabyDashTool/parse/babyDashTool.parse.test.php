@@ -9,32 +9,42 @@ use PhpBeast\Tool\ComparisonErrorTableTool;
 require_once "bigbang.php";
 
 
+
 $agg = AuthorTestAggregator::create();
 
+function test($str, $exp){
+    global $agg;
 
+    $agg->addTest(function (&$msg, $testNumber) use ($str, $exp) {
+        $res = BabyDashTool::parse($str);
+        $ret = ($res === $exp);
+        if (false === $ret) {
+            ComparisonErrorTableTool::collect($testNumber, $exp, $res);
+        }
+        return $ret;
+    });
+}
+
+//------------------------------------------------------------------------------/
+// BASIC TEST
+//------------------------------------------------------------------------------/
 $s = <<<EEE
 - apple
 - banana
 - cherry
 EEE;
 
-
-$agg->addTest(function (&$msg, $testNumber) use ($s) {
-    $res = BabyDashTool::parse($s);
-    $expected = [
-        'apple',
-        'banana',
-        'cherry',
-    ];
-
-    $ret = ($res === $expected);
-    if (false === $ret) {
-        ComparisonErrorTableTool::collect($testNumber, $expected, $res);
-    }
-    return $ret;
-});
+test($s, [
+    'apple',
+    'banana',
+    'cherry',
+]);
 
 
+
+//------------------------------------------------------------------------------/
+// BASIC INDENTATION
+//------------------------------------------------------------------------------/
 $s = <<<EEE
 - fruits:
 ----- apple
@@ -42,23 +52,34 @@ $s = <<<EEE
 - cherry
 EEE;
 
+test($s, [
+    'fruits' => [
+        'apple',
+        'banana',
+    ],
+    'cherry',
+]);
 
-$agg->addTest(function (&$msg, $testNumber) use ($s) {
-    $res = BabyDashTool::parse($s);
-    $expected = [
-        'fruits' => [
-            'apple',
-            'banana',
-        ],
-        'cherry',
-    ];
 
-    $ret = ($res === $expected);
-    if (false === $ret) {
-        ComparisonErrorTableTool::collect($testNumber, $expected, $res);
-    }
-    return $ret;
-});
+
+//------------------------------------------------------------------------------/
+// LINE NOT ENDING WITH COLON: VALUE IGNORED
+//------------------------------------------------------------------------------/
+$s = <<<EEE
+- fruits
+----- apple
+----- banana
+- cherry
+EEE;
+
+
+test($s, [
+    [
+        'apple',
+        'banana',
+    ],
+    'cherry',
+]);
 
 
 PrettyTestInterpreter::create()->execute($agg);
