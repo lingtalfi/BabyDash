@@ -9,10 +9,10 @@ use PhpBeast\Tool\ComparisonErrorTableTool;
 require_once "bigbang.php";
 
 
-
 $agg = AuthorTestAggregator::create();
 
-function test($str, $exp){
+function test($str, $exp)
+{
     global $agg;
 
     $agg->addTest(function (&$msg, $testNumber) use ($str, $exp) {
@@ -41,7 +41,6 @@ test($s, [
 ]);
 
 
-
 //------------------------------------------------------------------------------/
 // BASIC INDENTATION
 //------------------------------------------------------------------------------/
@@ -61,7 +60,6 @@ test($s, [
 ]);
 
 
-
 //------------------------------------------------------------------------------/
 // LINE NOT ENDING WITH COLON: VALUE IGNORED
 //------------------------------------------------------------------------------/
@@ -79,6 +77,34 @@ test($s, [
         'banana',
     ],
     'cherry',
+]);
+
+//------------------------------------------------------------------------------/
+// NESTED INDENTATION
+//------------------------------------------------------------------------------/
+$s = <<<EEE
+- fruits:
+----- red:
+--------- cherry
+----- yellow:
+--------- some:
+------------- long: banana
+------------- short: lemon
+EEE;
+
+
+test($s, [
+    'fruits' => [
+        'red' => [
+            'cherry',
+        ],
+        'yellow' => [
+            'some' => [
+                'long' => 'banana',
+                'short' => 'lemon',
+            ],
+        ],
+    ],
 ]);
 
 
