@@ -108,5 +108,35 @@ test($s, [
 ]);
 
 
+//------------------------------------------------------------------------------/
+// COMMENTS
+//------------------------------------------------------------------------------/
+$s = <<<EEE
+- fruits:
+# this is a comment
+----- red: # this is another comment
+--------- cherry
+----- yellow:
+--------- some:
+------------- long: banana
+------------- short: lemon
+EEE;
+
+
+test($s, [
+    'fruits' => [
+        'red' => [
+            'cherry',
+        ],
+        'yellow' => [
+            'some' => [
+                'long' => 'banana',
+                'short' => 'lemon',
+            ],
+        ],
+    ],
+]);
+
+
 PrettyTestInterpreter::create()->execute($agg);
 ComparisonErrorTableTool::display();
