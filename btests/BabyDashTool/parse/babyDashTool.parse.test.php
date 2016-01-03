@@ -138,5 +138,31 @@ test($s, [
 ]);
 
 
+//------------------------------------------------------------------------------/
+// AUTOCAST - SPECIAL VALUES
+//------------------------------------------------------------------------------/
+$s = <<<EEE
+- fruits:
+----- 16
+----- true
+----- false
+----- null
+----- 
+----- 45.12
+EEE;
+
+
+test($s, [
+    'fruits' => [
+        16,
+        true,
+        false,
+        null,
+        "",
+        45.12,
+    ],
+]);
+
+
 PrettyTestInterpreter::create()->execute($agg);
 ComparisonErrorTableTool::display();
