@@ -164,5 +164,18 @@ test($s, [
 ]);
 
 
+//------------------------------------------------------------------------------/
+// NO QUOTE INTERPRETATION BY DEFAULT
+//------------------------------------------------------------------------------/
+$s = <<<EEE
+- "hi"
+EEE;
+
+
+test($s, [
+    '"hi"',
+]);
+
+
 PrettyTestInterpreter::create()->execute($agg);
 ComparisonErrorTableTool::display();
