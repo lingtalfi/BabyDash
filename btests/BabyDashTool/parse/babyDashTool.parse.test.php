@@ -25,6 +25,21 @@ function test($str, $exp)
     });
 }
 
+
+function testQuote($str, $exp)
+{
+    global $agg;
+
+    $agg->addTest(function (&$msg, $testNumber) use ($str, $exp) {
+        $res = BabyDashTool::parse($str, true);
+        $ret = ($res === $exp);
+        if (false === $ret) {
+            ComparisonErrorTableTool::collect($testNumber, $exp, $res);
+        }
+        return $ret;
+    });
+}
+
 //------------------------------------------------------------------------------/
 // BASIC TEST
 //------------------------------------------------------------------------------/
@@ -171,9 +186,22 @@ $s = <<<EEE
 - "hi"
 EEE;
 
+//------------------------------------------------------------------------------/
+// WITH QUOTE INTERPRETATION BY DEFAULT
+//------------------------------------------------------------------------------/
+$s = <<<EEE
+- "hi"
+- ""
+- "6"
+- 6
+EEE;
 
-test($s, [
-    '"hi"',
+
+testQuote($s, [
+    'hi',
+    '',
+    '6',
+    6,
 ]);
 
 

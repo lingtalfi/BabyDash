@@ -27,7 +27,7 @@ class BabyDashTool
             ->setIndentChar('-')
             ->buildNode($s);
         if (true === $acceptQuotableValue) {
-            return NodeToArrayConvertor::create()->setInterpreter(QuotableValueInterpreter::create())->convert($node);
+            return NodeToArrayConvertor::create()->setInterpreter(QuotableValueInterpreter::create()->setQuotedValueIsAlwaysString(true))->convert($node);
         }
         return NodeToArrayConvertor::create()->convert($node);
     }

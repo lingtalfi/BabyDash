@@ -166,6 +166,10 @@ Dependencies
 History Log
 ------------------
     
+- 1.1.8 -- 2016-01-11
+
+    - fix bug, quoted value always return a string
+    
 - 1.1.0 -- 2015-12-19
 
     - add acceptedQuotableValue parameter to BabyDashTool::parse method
