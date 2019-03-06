@@ -1,14 +1,14 @@
 <?php
 
-namespace BabyDash;
+namespace Ling\BabyDash;
 
 /*
  * LingTalfi 2015-12-19
  */
-use IndentedLines\KeyFinder\KeyFinder;
-use IndentedLines\NodeToArrayConvertor\NodeToArrayConvertor;
-use IndentedLines\NodeTreeBuilder\NodeTreeBuilder;
-use IndentedLines\ValueInterpreter\QuotableValueInterpreter;
+use Ling\IndentedLines\KeyFinder\KeyFinder;
+use Ling\IndentedLines\NodeToArrayConvertor\NodeToArrayConvertor;
+use Ling\IndentedLines\NodeTreeBuilder\NodeTreeBuilder;
+use Ling\IndentedLines\ValueInterpreter\QuotableValueInterpreter;
 
 class BabyDashTool
 {

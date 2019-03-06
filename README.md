@@ -15,7 +15,7 @@ Install
 
 Using the [uni tool](https://github.com/lingtalfi/universe-naive-importer)
 ```bash
-uni import BabyDash
+uni import Ling/BabyDash
 ```
 
 
@@ -33,7 +33,7 @@ Examples
 <?php
 
 
-use BabyDash\BabyDashTool;
+use Ling\BabyDash\BabyDashTool;
 
 require_once "bigbang.php";
 
@@ -57,7 +57,7 @@ This example demonstrates how belongliness can be created with indentation, and 
 <?php
 
 
-use BabyDash\BabyDashTool;
+use Ling\BabyDash\BabyDashTool;
 
 require_once "bigbang.php";
 
