@@ -178,7 +178,11 @@ Dependencies
 
 History Log
 ------------------
-    
+
+- 1.1.9 -- 2020-12-04
+
+    - Add lpi-deps.byml file
+
 - 1.1.8 -- 2016-01-11
 
     - fix bug, quoted value always return a string
